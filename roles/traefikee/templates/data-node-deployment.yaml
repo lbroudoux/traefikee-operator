@@ -1,0 +1,76 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefikee-data-node
+  namespace: traefikee
+  labels:
+    app: {{ appName }}
+spec:
+  replicas: {{ proxies }}
+  selector:
+    matchLabels:
+      app: {{ appName }}
+      component: data-nodes
+  template:
+    metadata:
+      labels:
+        app: {{ appName }}
+        component: data-nodes
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4646"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: component
+                      operator: In
+                      values:
+                        - data-nodes
+                topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: traefikee-data-node
+          image: {{ image }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATA_NODE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: traefikee-tokens
+                  key: data-node
+          args:
+            - "start-data-node"
+            - "--peeraddresses=traefikee-control-nodes.traefikee:4242"
+            - "--traefikeelog.traefik=INFO"
+            - "--token=$(DATA_NODE_TOKEN)"
+          securityContext:
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
+          ports:
+            - containerPort: 4545
+              name: ping
+            - containerPort: 80
+              name: http
+            - containerPort: 443
+              name: https
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: ping
+            initialDelaySeconds: 10
+            periodSeconds: 1
+          volumeMounts:
+            - name: traefikee-state
+              mountPath: /var/lib/traefikee_state
+      volumes:
+        - name: traefikee-state
+          emptyDir: {}

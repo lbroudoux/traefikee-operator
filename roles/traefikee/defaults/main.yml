@@ -1,0 +1,7 @@
+---
+# defaults file for traefikee
+
+appName: traefikee
+image: store/containous/traefikee:v1.2.1
+controllers: 1
+proxies: 2

@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefikee-control-nodes
+  namespace: '{{ meta.namespace }}'
+  labels:
+    app: {{ appName }}
+spec:
+  ports:
+    - name: control-node-protocol
+      port: 4242
+  selector:
+    component: control-nodes
+    app: {{ appName }}

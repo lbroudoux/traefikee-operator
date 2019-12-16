@@ -1,0 +1,46 @@
+---
+# tasks file for traefikee
+
+- name: Get information about the cluster
+  set_fact:
+    api_groups: "{{ lookup('k8s', cluster_info='api_groups') }}"
+
+- name: Get license key
+  set_fact:
+    licenseKey: "{{ lookup('env','TRAEFIKEE_LICENSE_KEY') }}"
+
+- name: The RBAC is present
+  when: licenseKey != ""
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'rbac-singlecn.yaml') | from_yaml_all | reject('none') | list }}"
+
+- name: The data node external service is present
+  when: licenseKey != ""
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'data-node-external-service.yaml') | from_yaml_all | reject('none') | list }}"
+
+- name: The control node internal service is present
+  when: licenseKey != ""
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'control-node-internal-service.yaml') | from_yaml_all | reject('none') | list }}"
+
+- name: The cluster internal api service is present
+  when: licenseKey != ""
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'cluster-internal-api-service.yaml') | from_yaml_all | reject('none') | list }}"
+
+- name: The controller is present
+  when: licenseKey != ""
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'control-node-statefulset-one-cn.yaml') | from_yaml_all | reject('none') | list }}"
+
+- name: The proxies are present
+  when: licenseKey != ""
+  k8s:
+    state: present
+    definition: "{{ lookup('template', 'data-node-deployment.yaml') | from_yaml_all | reject('none') | list }}"

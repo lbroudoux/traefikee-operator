@@ -1,0 +1,13 @@
+scorecard:
+  # Setting a global scorecard option
+  output: json
+  plugins:
+    # `basic` tests configured to test 1 CR
+    - basic:
+        cr-manifest:
+          - "deploy/crds/containo.us_v1alpha1_traefikee_cr.yaml"
+    # `olm` tests configured to test 1 CR
+    - olm:
+        cr-manifest:
+          - "deploy/crds/containo.us_v1alpha1_traefikee_cr.yaml"
+        csv-path: "deploy/olm-catalog/traefikee-operator/0.0.1/traefikee-operator.v0.0.1.clusterserviceversion.yaml"

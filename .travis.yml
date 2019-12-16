@@ -1,0 +1,32 @@
+sudo: required
+services:
+  - docker
+language: python
+dist: "trusty" # otherwise 'python3-pip' won't be available
+addons:
+  apt:
+    packages:
+      - "python3"
+      - "python3-pip"
+env:
+  - TEST_NAMESPACE=traefikee
+install:
+  - sudo make tools
+  - pip3 install docker molecule openshift jmespath
+script:
+  - make test-ci
+  - make build
+
+deploy:
+  - provider: releases
+    api_key: ${GITHUB_TOKEN}
+    skip_cleanup: true
+    on:
+      repo: containous/traefikee-operator
+      tags: true
+  - provider: script
+    script: make docker-push
+    on:
+      repo: containous/traefikee-operator
+      tags: true
+

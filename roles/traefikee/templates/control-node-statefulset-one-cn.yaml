@@ -1,0 +1,98 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: traefikee-control-node
+  namespace: '{{ meta.namespace }}'
+  labels:
+    app: {{ appName }}
+spec:
+  serviceName: traefikee-control-nodes
+  replicas: {{ controllers }}
+  selector:
+    matchLabels:
+      app: {{ appName }}
+      component: control-nodes
+      subcomponent: control-node
+  template:
+    metadata:
+      labels:
+        app: {{ appName }}
+        component: control-nodes
+        subcomponent: control-node
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "4646"
+    spec:
+      serviceAccountName: traefikee
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: component
+                      operator: In
+                      values:
+                        - control-nodes
+                topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: traefikee-control-node
+          image: {{ image }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          args:
+            - "bootstrap"
+            - "--licensekey={{ licenseKey }}"
+            - "--kubernetes.namespace=$(POD_NAMESPACE)"
+            - "--controlnodes=1"
+            - "--api"
+            - "--clustername={{ appName }}"
+            - "--traefikeesocket=/socket/traefikee.sock"
+            - "--traefikeectlapi.socket=/socket/traefikeectl.sock"
+            - "--traefikeelog.traefik=DEBUG"
+            - "--advertise=traefikee-control-nodes.traefikee:4242"
+            - "--listen=$(POD_IP):4242"
+          securityContext:
+            readOnlyRootFilesystem: true
+          ports:
+            - containerPort: 4242
+              name: control-port
+            - containerPort: 8080
+              name: api
+          readinessProbe:
+            tcpSocket:
+              port: 4242
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          volumeMounts:
+            - name: traefikee-socket
+              mountPath: /socket
+            - name: traefikee-control-node-data
+              mountPath: /var/lib/traefikee_state
+      volumes:
+        - name: traefikee-socket
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: traefikee-control-node-data
+        namespace: '{{ meta.namespace }}'
+        labels:
+          app: {{ appName }}
+          component: control-nodes
+          subcomponent: control-node-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

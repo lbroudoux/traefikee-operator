@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefikee-operator
+  namespace: traefikee
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: traefikee-operator
+  template:
+    metadata:
+      labels:
+        name: traefikee-operator
+    spec:
+      serviceAccountName: traefikee-operator
+      containers:
+        - name: ansible
+          command:
+          - /usr/local/bin/ao-logs
+          - /tmp/ansible-operator/runner
+          - stdout
+          # Replace this with the built image name
+          image: containous/traefikee-operator:v0.0.1
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+            readOnly: true
+        - name: operator
+          # Replace this with the built image name
+          image: containous/traefikee-operator:v0.0.1
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+          - mountPath: /tmp/ansible-operator/runner
+            name: runner
+          env:
+            - name: WATCH_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "traefikee-operator"
+            - name: ANSIBLE_GATHERING
+              value: explicit
+            - name: TRAEFIKEE_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: license
+                  key: license
+      volumes:
+        - name: runner
+          emptyDir: {}
