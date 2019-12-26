@@ -37,7 +37,7 @@ metadata:
     description: Traefik Enterprise Edition
     repository: https://github.com/containous/traefikee-operator
     support: https://docs.containo.us
-  name: traefikee-operator.v0.1.0
+  name: traefikee-operator.v0.1.1
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -200,7 +200,7 @@ spec:
                 - /usr/local/bin/ao-logs
                 - /tmp/ansible-operator/runner
                 - stdout
-                image: containous/traefikee-operator:v0.1.0
+                image: containous/traefikee-operator:v0.1.1
                 imagePullPolicy: IfNotPresent
                 name: ansible
                 resources: {}
@@ -226,7 +226,7 @@ spec:
                     secretKeyRef:
                       key: license
                       name: license
-                image: containous/traefikee-operator:v0.1.0
+                image: containous/traefikee-operator:v0.1.1
                 imagePullPolicy: IfNotPresent
                 name: operator
                 resources: {}
@@ -323,5 +323,5 @@ spec:
   maturity: alpha
   provider:
     name: Containous
-  replaces: traefikee-operator.v0.1.0
-  version: 0.1.0
+  replaces: traefikee-operator.v0.1.1
+  version: 0.1.1
