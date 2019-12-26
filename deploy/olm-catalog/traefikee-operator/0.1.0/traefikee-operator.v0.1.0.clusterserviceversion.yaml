@@ -31,7 +31,56 @@ metadata:
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
-  customresourcedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - name: traefikees.containo.us
+      version: v1alpha1
+      kind: Traefikee
+      displayName: TraefikEE
+      description: Represents a TraefikEE installation
+      resources:
+        - kind: Service
+          name: ''
+          version: v1
+        - kind: Deployment
+          name: ''
+          version: v1
+        - kind: Pod
+          name: ''
+          version: v1
+        - kind: ConfigMap
+          name: ''
+          version: v1
+        - kind: Secret
+          name: ''
+          version: v1
+        - kind: PersistentVolumeClaim
+          name: ''
+          version: v1
+        - kind: StatefulSets
+          name: ''
+          version: v1
+      specDescriptors:
+        - description: Name of your TraefikEE cluster
+          displayName: appName
+          path: appName
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:label'
+        - description: Number of controllers to install
+          displayName: controllers
+          path: controllers
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:label'
+        - description: Number of proxies to install
+          displayName: proxies
+          path: proxies
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:label'
+        - description: TraefikEE image to install
+          displayName: image
+          path: image
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:label'
   description: |
     TraefikEE is a distributed, and highly available edge routing solution built on top of the open source Traefik and natively integrates with Openshift to:
 
