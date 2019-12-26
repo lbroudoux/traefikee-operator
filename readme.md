@@ -29,7 +29,7 @@ kubectl apply -f deploy/role_binding.yaml
 Install the operator:
 
 ```
-kubectl apply -f deploy/operator.yaml
+sed 's|{{REPLACE_IMAGE}}|containous/traefikee-operator:latest|g' deploy/operator.yaml | kubectl apply -f -
 ```
 
 **IMPORTANT**: Ensure that your cluster is able to pull the image pushed to your registry.
