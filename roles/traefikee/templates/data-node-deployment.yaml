@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: traefikee-data-node
-  namespace: traefikee
+  namespace: '{{ meta.namespace }}'
   labels:
     app: {{ appName }}
 spec:
