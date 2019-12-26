@@ -37,60 +37,11 @@ metadata:
     description: Traefik Enterprise Edition
     repository: https://github.com/containous/traefikee-operator
     support: https://docs.containo.us
-  name: traefikee-operator.v0.1.0
+  name: traefikee-operator.v0.1.1
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
-  customresourcedefinitions:
-    owned:
-    - name: traefikees.containo.us
-      version: v1alpha1
-      kind: Traefikee
-      displayName: TraefikEE
-      description: Represents a TraefikEE installation
-      resources:
-        - kind: Service
-          name: ''
-          version: v1
-        - kind: Deployment
-          name: ''
-          version: v1
-        - kind: Pod
-          name: ''
-          version: v1
-        - kind: ConfigMap
-          name: ''
-          version: v1
-        - kind: Secret
-          name: ''
-          version: v1
-        - kind: PersistentVolumeClaim
-          name: ''
-          version: v1
-        - kind: StatefulSets
-          name: ''
-          version: v1
-      specDescriptors:
-        - description: Name of your TraefikEE cluster
-          displayName: appName
-          path: appName
-          x-descriptors:
-            - 'urn:alm:descriptor:com.tectonic.ui:label'
-        - description: Number of controllers to install
-          displayName: controllers
-          path: controllers
-          x-descriptors:
-            - 'urn:alm:descriptor:com.tectonic.ui:label'
-        - description: Number of proxies to install
-          displayName: proxies
-          path: proxies
-          x-descriptors:
-            - 'urn:alm:descriptor:com.tectonic.ui:label'
-        - description: TraefikEE image to install
-          displayName: image
-          path: image
-          x-descriptors:
-            - 'urn:alm:descriptor:com.tectonic.ui:label'
+  customresourcedefinitions: {}
   description: |
     TraefikEE is a distributed, and highly available edge routing solution built on top of the open source Traefik and natively integrates with Openshift to:
 
@@ -200,7 +151,7 @@ spec:
                 - /usr/local/bin/ao-logs
                 - /tmp/ansible-operator/runner
                 - stdout
-                image: containous/traefikee-operator:v0.1.0
+                image: containous/traefikee-operator:v0.1.1
                 imagePullPolicy: IfNotPresent
                 name: ansible
                 resources: {}
@@ -226,7 +177,7 @@ spec:
                     secretKeyRef:
                       key: license
                       name: license
-                image: containous/traefikee-operator:v0.1.0
+                image: containous/traefikee-operator:v0.1.1
                 imagePullPolicy: IfNotPresent
                 name: operator
                 resources: {}
@@ -323,5 +274,5 @@ spec:
   maturity: alpha
   provider:
     name: Containous
-  replaces: traefikee-operator.v0.1.0
-  version: 0.1.0
+  replaces: traefikee-operator.v0.1.1
+  version: 0.1.1
