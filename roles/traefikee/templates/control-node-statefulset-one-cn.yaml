@@ -50,9 +50,14 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: TRAEFIKEE_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: license
+                  key: license
           args:
             - "bootstrap"
-            - "--licensekey={{ licenseKey }}"
+            - "--licensekey=$(TRAEFIKEE_LICENSE_KEY)"
             - "--kubernetes.namespace=$(POD_NAMESPACE)"
             - "--controlnodes=1"
             - "--api"

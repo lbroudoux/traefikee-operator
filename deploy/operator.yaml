@@ -47,11 +47,6 @@ spec:
               value: "traefikee-operator"
             - name: ANSIBLE_GATHERING
               value: explicit
-            - name: TRAEFIKEE_LICENSE_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: license
-                  key: license
       volumes:
         - name: runner
           emptyDir: {}
