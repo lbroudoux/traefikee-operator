@@ -44,7 +44,7 @@ metadata:
   name: traefikee-setup
   namespace: traefikee
 spec:
-  image: store/containous/traefikee:v1.2.1
+  image: store/containous/traefikee:v1.3.0
   appName: traefikee
   controllers: 1
   proxies: 2" | kubectl apply -f -
