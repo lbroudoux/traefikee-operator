@@ -24,6 +24,8 @@ kubectl apply -f deploy/crds/containo.us_traefikees_crd.yaml
 kubectl apply -f deploy/service_account.yaml
 kubectl apply -f deploy/role.yaml
 kubectl apply -f deploy/role_binding.yaml
+oc apply -f deploy/traefikee-scc.yaml
+oc adm policy add-scc-to-user traefikee-scc -z default -n traefikee
 ```
 
 Install the operator:
