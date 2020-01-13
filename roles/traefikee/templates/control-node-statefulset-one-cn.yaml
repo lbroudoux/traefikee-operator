@@ -5,19 +5,19 @@ metadata:
   name: traefikee-control-node
   namespace: '{{ meta.namespace }}'
   labels:
-    app: {{ appName }}
+    app: {{ clustername }}
 spec:
   serviceName: traefikee-control-nodes
   replicas: {{ controllers }}
   selector:
     matchLabels:
-      app: {{ appName }}
+      app: {{ clustername }}
       component: control-nodes
       subcomponent: control-node
   template:
     metadata:
       labels:
-        app: {{ appName }}
+        app: {{ clustername }}
         component: control-nodes
         subcomponent: control-node
       annotations:
@@ -61,7 +61,7 @@ spec:
             - "--kubernetes.namespace=$(POD_NAMESPACE)"
             - "--controlnodes=1"
             - "--api"
-            - "--clustername={{ appName }}"
+            - "--clustername={{ clustername }}"
             - "--traefikeesocket=/socket/traefikee.sock"
             - "--traefikeectlapi.socket=/socket/traefikeectl.sock"
             - "--traefikeelog.traefik=DEBUG"
@@ -92,7 +92,7 @@ spec:
         name: traefikee-control-node-data
         namespace: '{{ meta.namespace }}'
         labels:
-          app: {{ appName }}
+          app: {{ clustername }}
           component: control-nodes
           subcomponent: control-node-data
       spec:

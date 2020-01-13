@@ -4,7 +4,7 @@ metadata:
   name: example-traefikee
   namespace: traefikee
 spec:
-  appName: traefikee
+  clustername: traefikee
   image: store/containous/traefikee:v1.2.1
   controllers: 1
   proxies: 2

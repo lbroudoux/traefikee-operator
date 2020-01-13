@@ -47,7 +47,7 @@ metadata:
   namespace: traefikee
 spec:
   image: store/containous/traefikee:v1.3.0
-  appName: traefikee
+  clustername: traefikee
   controllers: 1
   proxies: 2" | kubectl apply -f -
 ```

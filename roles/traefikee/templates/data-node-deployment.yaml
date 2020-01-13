@@ -5,17 +5,17 @@ metadata:
   name: traefikee-data-node
   namespace: '{{ meta.namespace }}'
   labels:
-    app: {{ appName }}
+    app: {{ clustername }}
 spec:
   replicas: {{ proxies }}
   selector:
     matchLabels:
-      app: {{ appName }}
+      app: {{ clustername }}
       component: data-nodes
   template:
     metadata:
       labels:
-        app: {{ appName }}
+        app: {{ clustername }}
         component: data-nodes
       annotations:
         prometheus.io/scrape: "true"

@@ -5,7 +5,7 @@ metadata:
   name: traefikee
   namespace: '{{ meta.namespace }}'
   labels:
-    app: {{ appName }}
+    app: {{ clustername }}
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -13,7 +13,7 @@ metadata:
   name: traefikee-role
   namespace: '{{ meta.namespace }}'
   labels:
-    app: {{ appName }}
+    app: {{ clustername }}
 rules:
   - apiGroups:
       - ""
@@ -54,7 +54,7 @@ metadata:
   name: traefikee
   namespace: '{{ meta.namespace }}'
   labels:
-    app: {{ appName }}
+    app: {{ clustername }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

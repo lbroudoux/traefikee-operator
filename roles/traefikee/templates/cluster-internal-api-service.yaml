@@ -5,12 +5,12 @@ metadata:
   name: traefikee-api
   namespace: '{{ meta.namespace }}'
   labels:
-    app: {{ appName }}
+    app: {{ clustername }}
 spec:
   ports:
     - port: 8080
       name: api
   selector:
-    app: {{ appName }}
+    app: {{ clustername }}
     component: control-nodes
     subcomponent: control-node
