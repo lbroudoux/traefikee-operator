@@ -10,4 +10,4 @@ scorecard:
     - olm:
         cr-manifest:
           - "deploy/crds/containo.us_v1alpha1_traefikee_cr.yaml"
-        csv-path: "deploy/olm-catalog/traefikee-operator/0.2.0/traefikee-operator.v0.2.0.clusterserviceversion.yaml"
+        csv-path: "deploy/olm-catalog/traefikee-operator/0.3.0/traefikee-operator.v0.3.0.clusterserviceversion.yaml"
